@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.send(__dirname + '/routes/website/index.html');
 });
 
-var port = Number(process.env.port || 8080)
+var port = Number(process.env.PORT)
 http.listen(port, () => {
     console.log(`listening on port ${port}`);
 });
