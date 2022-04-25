@@ -4,21 +4,37 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app)
 const io = require("socket.io")(http);
+const MongoClient = require("mongodb").MongoClient
+
+let userCount = 0
 
 app.use(express.json())
 app.use(express.static("./routes/website"))
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
+MongoClient.connect(process.env.DATABASE_URL, function(err, db){
+    if (err) throw err
+    const msgDB = db.db("msgDB")
 
-    socket.on('disconnect', () => {
-        console.log('a user disconnected');
+    io.on('connection', (socket) => {
+        console.log('a user connected');
+        userCount++
+    
+        socket.on('disconnect', () => {
+            console.log('a user disconnected');
+            userCount--
+        });
+    
+        socket.on('message', (msgData) => {
+            io.emit('message', msgData)
+            msgObj = {message : msgData[0], author : msgData[1]}
+            msgDB.collection("chatroom").insertOne(msgObj,function(err, res){
+                if (err) throw err
+                console.log("message uploaded to db")
+                db.close()
+            })
+        })
     });
-
-    socket.on('message', (msgData) => {
-        io.emit('message', msgData)
-    })
-});
+})
 
 app.get('/', (req, res) => {
     res.send(__dirname + '/routes/website/index.html');
