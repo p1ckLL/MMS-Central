@@ -7,7 +7,7 @@ var author = document.getElementById('author')
 
 form.addEventListener('submit', function (e) {
   e.preventDefault();
-  if (input.value) {
+  if (input.value && author.value) {
     socket.emit('message', [input.value, author.value]);
     input.value = '';
   }
