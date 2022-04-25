@@ -14,7 +14,7 @@
     #input {
       border: none;
       padding: 0 1rem;
-      flex-grow: 0.45;
+      flex-grow: 45%;
       border-radius: 2rem;
       margin: 0.25rem;
     }
@@ -22,13 +22,19 @@
     #author {
       border: none;
       padding: 0 1rem;
-      flex-grow: 0.45;
+      flex-grow: 45%;
       border-radius: 2rem;
       margin: 0.25rem;
     }
 
     #input:focus {
       outline: none;
+    }
+
+    #usercount {
+      flex-grow: 5%;
+      font-size: 40px;
+      margin: 0.10rem
     }
 
     #form>button {
