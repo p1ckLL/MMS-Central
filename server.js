@@ -6,6 +6,8 @@ const http = require('http').Server(app)
 const io = require("socket.io")(http);
 const MongoClient = require("mongodb").MongoClient
 
+const userCountUI = document.getElementById("usercount")
+
 let userCount = 0
 
 app.use(express.json())
@@ -18,10 +20,12 @@ MongoClient.connect(process.env.DATABASE_URL, function(err, db){
     io.on('connection', (socket) => {
         console.log('a user connected');
         userCount++
+        userCountUI.innerHTML = `${userCount} users online`
     
         socket.on('disconnect', () => {
             console.log('a user disconnected');
             userCount--
+            userCountUI.innerHTML = `${userCount} users online`
         });
     
         socket.on('message', (msgData) => {
