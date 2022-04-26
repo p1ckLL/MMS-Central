@@ -5,6 +5,8 @@ var form = document.getElementById('form');
 var input = document.getElementById('input');
 var author = document.getElementById('author')
 
+const userCountUI = document.getElementById("usercount")
+
 form.addEventListener('submit', function (e) {
   e.preventDefault();
   if (input.value && author.value) {
@@ -20,3 +22,7 @@ socket.on('message', function (msgData) {
   messages.appendChild(item);
   window.scrollTo(0, document.body.scrollHeight);
 });
+
+socket.on("user-count update", function(userCount){
+  userCountUI.innerHTML = `${userCount} users online`
+})
