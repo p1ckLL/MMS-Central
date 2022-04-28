@@ -85,8 +85,16 @@ a.button {
 
 #roomText{
   font-family: "Segoe-UI", "Tahoma", "Geneva", "Verdana", sans-serif;
+  align-self: center;
+}
+
+#privText{
+  font-family: "Segoe-UI", "Tahoma", "Geneva", "Verdana", sans-serif;
+  align-self: center;
+  margin-left: 15px;
 }
 
 #private{
   transform: scale(1.5);
+  margin-left: 15px;
 }
