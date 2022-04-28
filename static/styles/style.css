@@ -83,15 +83,28 @@ a.button {
   background: #efefef;
 }
 
-#roomText{
+#createBtn{
   font-family: "Segoe-UI", "Tahoma", "Geneva", "Verdana", sans-serif;
   align-self: center;
+  width: 100%;
+  height: 40px;
 }
 
 #privText{
   font-family: "Segoe-UI", "Tahoma", "Geneva", "Verdana", sans-serif;
   align-self: center;
-  margin-left: 15px;
+  margin-left: 10px;
+  width: 100%;
+}
+
+#roomName{
+  margin-left: 10px;
+  width: 100%;
+}
+
+#roomPass{
+  margin-left: 10px;
+  width: 100%;
 }
 
 #private{
