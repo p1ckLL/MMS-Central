@@ -9,7 +9,7 @@ const MongoClient = require("mongodb").MongoClient
 let userCount = 0
 
 app.use(express.json())
-app.use(express.static("./routes/website"))
+app.use(express.static("static"))
 
 MongoClient.connect(process.env.DATABASE_URL, function(err, db){
     if (err) throw err
@@ -39,8 +39,12 @@ MongoClient.connect(process.env.DATABASE_URL, function(err, db){
 })
 
 app.get('/', (req, res) => {
-    res.send(__dirname + '/routes/website/index.html');
+    res.sendFile(__dirname + '/src/main.html');
 });
+
+app.get('/rooms', (req, res) => {
+    res.sendFile(__dirname + '/src/room.html')
+})
 
 var port = Number(process.env.PORT)
 http.listen(port, () => {

@@ -1,13 +1,13 @@
-var socket = io();
+const socket = io();
 
-var messages = document.getElementById('messages');
-var form = document.getElementById('form');
-var input = document.getElementById('input');
-var author = document.getElementById('author')
+const messages = document.getElementById('messages');
+const msgForm = document.getElementById('msgForm');
+const input = document.getElementById('input');
+const author = document.getElementById('author')
 
 const userCountUI = document.getElementById("usercount")
 
-form.addEventListener('submit', function (e) {
+msgForm.addEventListener('submit', (e) => {
   e.preventDefault();
   if (input.value && author.value) {
     socket.emit('message', [input.value, author.value]);
