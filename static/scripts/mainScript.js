@@ -1,11 +1,19 @@
-const socket = io();
+let windowPath = window.location.pathname
+let roomName = windowPath.startsWith('/rooms/') ? windowPath.split('/rooms/')[1] : null
+console.log(roomName)
+
+const socket = io('/', {
+  query : {
+    room : roomName
+  }
+});
 
 const messages = document.getElementById('messages');
 const msgForm = document.getElementById('msgForm');
-const input = document.getElementById('input');
-const author = document.getElementById('author')
+const input = document.getElementById('msgInput');
+const author = document.getElementById('authorInput')
 
-const userCountUI = document.getElementById("usercount")
+const userCountUI = document.getElementById("usercount")  
 
 msgForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -15,7 +23,7 @@ msgForm.addEventListener('submit', (e) => {
   }
 });
 
-socket.on('message', function (msgData) {
+socket.on('message', (msgData) => {
   console.log("client received message")
   var item = document.createElement('li');
   item.textContent = msgData[1] + ": " + msgData[0];
@@ -23,6 +31,6 @@ socket.on('message', function (msgData) {
   window.scrollTo(0, document.body.scrollHeight);
 });
 
-socket.on("user-count update", function(userCount){
+socket.on("user-count update", (userCount) => {
   userCountUI.innerHTML = `${userCount} users online`
 })
