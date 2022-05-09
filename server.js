@@ -16,7 +16,7 @@ function handleMessage(socket, msgData, mmsDB){
     
     io.to(currentRoom).emit('message', msgData)
     msgObj = {message : msgData[0], author : msgData[1], room : currentRoom}
-    mmsDB.collection("msgCollection").insertOne(msgObj,function(err, res){
+    mmsDB.collection("msgCollection").insertOne(msgObj, (err, res) => {
         if (err) throw err
         console.log("message uploaded to db")
     })
