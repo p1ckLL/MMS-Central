@@ -26,6 +26,7 @@ msgForm.addEventListener('submit', (e) => {
 socket.on('message', (msgData) => {
   console.log("client received message")
   var item = document.createElement('li');
+  item.id = "sentMsgText"
   item.textContent = msgData[1] + ": " + msgData[0];
   messages.appendChild(item);
   window.scrollTo(0, document.body.scrollHeight);

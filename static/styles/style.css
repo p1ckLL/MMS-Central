@@ -126,3 +126,7 @@ a.button {
   transform: scale(1.5);
   margin-left: 15px;
 }
+
+#sentMsgText {
+  font-family: "Segoe-UI", "Tahoma", "Geneva", "Verdana", sans-serif;
+}
