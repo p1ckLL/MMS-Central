@@ -31,7 +31,7 @@ function handleSocketDisconnection(){
 function handleSocketConnection(socket, mmsDB){ 
     console.log('a user connected');
     userCount++
-    io.emit("user-count new user", userCount)
+    io.emit("user-count update", userCount)
 
     socket.on('disconnect', () => {
         handleSocketDisconnection()
