@@ -41,7 +41,7 @@ function handleSocketConnection(socket, mmsDB){
     })
 }
 
-MongoClient.connect(process.env.DATABASE_URL, function(err, db){
+MongoClient.connect(process.env.DATABASE_URL, (err, db) => {
     if (err) throw err
     const mmsDB = db.db("mmsDB")
 
