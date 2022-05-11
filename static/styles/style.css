@@ -1,19 +1,19 @@
 body {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   height: 100vh;
   font-family: sans-serif;
+  justify-content: flex-end;
 }
+
 body * {
   font-family: inherit;
 }
 
-#msgForm {
+form {
   background: rgba(0, 0, 0, 0.15);
   padding: 0.5rem 2vw;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -21,12 +21,6 @@ body * {
   box-sizing: border-box;
   backdrop-filter: blur(10px);
   flex-wrap: nowrap;
-}
-
-#roomForm {
-  margin-top: auto;
-  width: 100vh;
-  background: rgba(0, 0, 0, 0.15);
 }
 
 input {
@@ -59,9 +53,14 @@ button {
 }
 
 #messages {
+  display:flex;
+  flex-direction: column;
   list-style-type: none;
   margin: 0;
   padding: 0;
+  flex: 1;
+  overflow: auto;
+  min-height: min-content;
 }
 
 #messages>li {
