@@ -38,6 +38,13 @@ function handleSocketConnection(socket, mmsDB){
     socket.on('message', (msgData) => {
         handleMessage(socket, msgData, mmsDB)
     })
+    socket.on('password attempt', (guess) => {
+        if (guess == process.env.SECRET_PASSWORD){
+            console.log("pass guess success")
+        } else {
+            io.to(socket.id).emit("failed password")
+        }
+    })
 }
 
 MongoClient.connect(process.env.DATABASE_URL, (err, db) => {
@@ -62,6 +69,10 @@ app.get('/rooms/:room', (req, res) => {
 
 app.get('/rooms', (req, res) => {
     res.sendFile(__dirname + '/src/room.html')
+})
+
+app.get('/deadend', (req, res) => {
+    res.sendFile(__dirname + '/src/deadend.html')
 })
 
 var port = Number(process.env.PORT)

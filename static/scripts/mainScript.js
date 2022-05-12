@@ -13,7 +13,10 @@ const msgForm = document.getElementById('msgForm');
 const input = document.getElementById('msgInput');
 const author = document.getElementById('authorInput')
 
-const userCountUI = document.getElementById("usercount")  
+const userCountUI = document.getElementById("usercount")
+
+let password = prompt("What is the password")
+socket.emit("password attempt", password)
 
 msgForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -22,6 +25,10 @@ msgForm.addEventListener('submit', (e) => {
     input.value = '';
   }
 });
+
+socket.on("failed password", () => {
+  window.location = "/deadend"
+})
 
 socket.on('message', (msgData) => {
   var item = document.createElement('li');
