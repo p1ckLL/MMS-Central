@@ -28,7 +28,7 @@ socket.on('message', (msgData) => {
   item.id = "sentMsgText"
   item.textContent = msgData[1] + ": " + msgData[0];
   messages.appendChild(item);
-  window.scrollTo(0, document.querySelector("#messages").scrollHeight);
+  item.scrollIntoView(false)
 });
 
 socket.on("user-count update", (userCount) => {
