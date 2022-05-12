@@ -41,6 +41,7 @@ function handleSocketConnection(socket, mmsDB){
     socket.on('password attempt', (guess) => {
         if (guess == process.env.SECRET_PASSWORD){
             console.log("pass guess success")
+            io.to(socket.id).emit("user-count update", userCount)
         } else {
             io.to(socket.id).emit("failed password")
         }
