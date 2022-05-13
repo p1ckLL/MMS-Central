@@ -6,7 +6,7 @@ const http = require('http').Server(app)
 const io = require("socket.io")(http);
 const MongoClient = require("mongodb").MongoClient
 
-let userCount = 0
+let userCount = io.engine.clientsCount
 
 app.use(express.json())
 app.use(express.static("static"))
