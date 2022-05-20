@@ -15,6 +15,7 @@ const author = document.getElementById('authorInput')
 
 const userCountUI = document.getElementById("usercount")
 
+window.location.reload()
 let password = prompt("What is the password")
 socket.emit("password attempt", password)
 
