@@ -15,7 +15,6 @@ const author = document.getElementById('authorInput')
 
 const userCountUI = document.getElementById("usercount")
 
-window.location.reload()
 let password = prompt("What is the password")
 socket.emit("password attempt", password)
 
@@ -31,10 +30,13 @@ socket.on("failed password", () => {
   window.location = "/deadend"
 })
 
-socket.on('message', (msgData) => {
+socket.on('message', (msgObj) => {
   var item = document.createElement('li');
   item.id = "sentMsgText"
-  item.textContent = msgData[1] + ": " + msgData[0];
+  item.textContent = msgObj.author + ": " + msgObj.message;
+  if (msgObj.isOfficial == true) {
+    item.style.color = 'red'
+  }
   messages.appendChild(item);
   item.scrollIntoView(false)
 });

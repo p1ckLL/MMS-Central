@@ -13,9 +13,22 @@ app.use(express.static("static"))
 
 function handleMessage(socket, msgData, mmsDB){
     let currentRoom = socket.handshake.query.room
+    let msgObj = {message : msgData[0], author : msgData[1], room : currentRoom, isOfficial : false}
     
-    io.to(currentRoom).emit('message', msgData)
-    msgObj = {message : msgData[0], author : msgData[1], room : currentRoom}
+    if (msgObj.author == process.env.PICKLE) {
+        msgObj.author = "pickle [OFFICIAL USER]"
+        msgObj.isOfficial = true
+    }
+    if (msgObj.author == process.env.BRANDON) {
+        msgObj.author = "Brandon [OFFICIAL USER]"
+        msgObj.isOfficial = true
+    }
+    if (msgObj.author == process.env.ATTICUS) {
+        msgObj.author = "atticus [OFFICIAL USER]"
+        msgObj.isOfficial = true
+    }
+
+    io.to(currentRoom).emit('message', msgObj)
     mmsDB.collection("msgCollection").insertOne(msgObj, (err, res) => {
         if (err) throw err
     })
