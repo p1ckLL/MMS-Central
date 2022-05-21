@@ -27,6 +27,10 @@ function handleMessage(socket, msgData, mmsDB){
         msgObj.author = "atticus [OFFICIAL USER]"
         msgObj.isOfficial = true
     }
+    if (msgObj.author == process.env.JEAN) {
+        msgObj.author = "jean-carlo [OFFICIAL USER]"
+        msgObj.isOfficial = true
+    }
 
     io.to(currentRoom).emit('message', msgObj)
     mmsDB.collection("msgCollection").insertOne(msgObj, (err, res) => {
