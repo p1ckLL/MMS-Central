@@ -67,6 +67,7 @@ function handleSocketConnection(socket, mmsDB){
     socket.on('code attempt', (codeData) => {
         if (codeData[0] == process.env.BACKUP_CODE){
             backupMode = !backupMode
+            io.emit('refresh')
         }
     })
 }

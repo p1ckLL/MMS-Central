@@ -44,3 +44,7 @@ socket.on('message', (msgObj) => {
 socket.on("user-count update", (userCount) => {
   userCountUI.innerHTML = `${userCount} users online`
 })
+
+socket.on("refresh", () => {
+  window.location.reload()
+})
