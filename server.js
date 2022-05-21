@@ -9,6 +9,7 @@ const MongoClient = require("mongodb").MongoClient
 
 let userCount = io.engine.clientsCount
 let backupMode = false
+let shutdown = false
 
 app.use(express.json())
 app.use(express.static("static"))
@@ -69,6 +70,10 @@ function handleSocketConnection(socket, mmsDB){
             backupMode = !backupMode
             io.emit('refresh')
         }
+        if (codeData[0] == process.env.SHUTDOWN_CODE) {
+            shutdown = !shutdown
+            io.emit('refresh')
+        }
     })
 }
 
@@ -84,19 +89,35 @@ MongoClient.connect(process.env.DATABASE_URL, (err, db) => {
 })
 
 app.get('/', (req, res) => {
-    res.redirect('/rooms/public')
+    if (shutdown == false) {
+        res.redirect('/rooms/public')
+    } else {
+        res.sendFile(__dirname + '/src/shutdown.html')
+    }
 });
 
 app.get('/rooms/:room', (req, res) => {
-    res.sendFile(__dirname + '/src/main.html');
+    if (shutdown == false){
+        res.sendFile(__dirname + '/src/main.html')
+    } else {
+        res.sendFile(__dirname + '/src/shutdown.html')
+    }
 })
 
 app.get('/rooms', (req, res) => {
-    res.sendFile(__dirname + '/src/room.html')
+    if (shutdown == false){
+        res.sendFile(__dirname + '/src/room.html')
+    } else {
+        res.sendFile(__dirname + '/src/shutdown.html')
+    }
 })
 
 app.get('/deadend', (req, res) => {
-    res.sendFile(__dirname + '/src/deadend.html')
+    if (shutdown == false){
+        res.sendFile(__dirname + '/src/deadend.html')
+    } else {
+        res.sendFile(__dirname + '/src/shutdown.html')
+    }
 })
 
 app.get('/deadpage/devcontrol', (req, res) => {
