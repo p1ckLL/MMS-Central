@@ -12,6 +12,7 @@ const messages = document.getElementById('messages');
 const msgForm = document.getElementById('msgForm');
 const input = document.getElementById('msgInput');
 const author = document.getElementById('authorInput')
+const sendButton = document.getElementById('sendButton')
 
 const userCountUI = document.getElementById("usercount")
 
@@ -23,6 +24,10 @@ msgForm.addEventListener('submit', (e) => {
   if (input.value && author.value) {
     socket.emit('message', [input.value, author.value]);
     input.value = '';
+    sendButton.disabled = true
+    setTimeout(() => {
+      sendButton.disabled = false
+    }, 700)
   }
 });
 
