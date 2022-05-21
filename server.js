@@ -1,12 +1,14 @@
 require('dotenv').config();
 
 const express = require('express');
+const { get } = require('express/lib/response');
 const app = express();
 const http = require('http').Server(app)
 const io = require("socket.io")(http);
 const MongoClient = require("mongodb").MongoClient
 
 let userCount = io.engine.clientsCount
+let backupMode = false
 
 app.use(express.json())
 app.use(express.static("static"))
@@ -56,11 +58,15 @@ function handleSocketConnection(socket, mmsDB){
         handleMessage(socket, msgData, mmsDB)
     })
     socket.on('password attempt', (guess) => {
-        if (guess == process.env.SECRET_PASSWORD){
-            console.log("pass guess success")
+        if (backupMode == false && guess == process.env.SECRET_PASSWORD || backupMode == true && guess == process.env.FALLBACK_PASSWORD || guess == process.env.DEV_PASSWORD){
             io.to(socket.id).emit("user-count update", userCount)
         } else {
             io.to(socket.id).emit("failed password")
+        }
+    })
+    socket.on('code attempt', (codeData) => {
+        if (codeData[0] == process.env.BACKUP_CODE){
+            backupMode = !backupMode
         }
     })
 }
@@ -71,7 +77,6 @@ MongoClient.connect(process.env.DATABASE_URL, (err, db) => {
 
     io.on('connection', (socket) => {
         let room = socket.handshake.query.room
-        console.log(room)
         socket.join(room)
         handleSocketConnection(socket, mmsDB)
     });
@@ -91,6 +96,10 @@ app.get('/rooms', (req, res) => {
 
 app.get('/deadend', (req, res) => {
     res.sendFile(__dirname + '/src/deadend.html')
+})
+
+app.get('/deadpage/devcontrol', (req, res) => {
+    res.sendFile(__dirname + '/src/devcontrol.html')
 })
 
 var port = Number(process.env.PORT)
