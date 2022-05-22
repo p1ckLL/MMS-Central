@@ -21,13 +21,15 @@ socket.emit("password attempt", password)
 
 msgForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  if (input.value && author.value) {
+  if (input.value && author.value.trim() != '') {
     socket.emit('message', [input.value, author.value]);
     input.value = '';
     sendButton.disabled = true
     setTimeout(() => {
       sendButton.disabled = false
     }, 700)
+  } else {
+    author.value = 'stop using an invisible name nerd'
   }
 });
 
