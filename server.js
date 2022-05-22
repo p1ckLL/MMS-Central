@@ -65,12 +65,12 @@ function handleSocketConnection(socket, mmsDB){
             io.to(socket.id).emit("failed password")
         }
     })
-    socket.on('code attempt', (codeData) => {
-        if (codeData[0] == process.env.BACKUP_CODE){
+    socket.on('code attempt', (code) => {
+        if (code == process.env.BACKUP_CODE){
             backupMode = !backupMode
             io.emit('refresh')
         }
-        if (codeData[0] == process.env.SHUTDOWN_CODE) {
+        if (code == process.env.SHUTDOWN_CODE) {
             shutdown = !shutdown
             io.emit('refresh')
         }
