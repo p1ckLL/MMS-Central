@@ -70,3 +70,8 @@ button {
 #messages>li:nth-child(odd) {
   background: #efefef;
 }
+
+#magicword{
+  width: 82vh;
+  height: 82vh;
+}
