@@ -45,6 +45,11 @@ function handleMessage(socket, msgData, mmsDB){
         msgObj.isOfficial = true
     }
 
+    if (msgObj.author == process.env.PEARSON) {
+        msgObj.author = "pearson [OFFICIAL USER]"
+        msgObj.isOfficial = true
+    }
+
     io.to(currentRoom).emit('message', msgObj)
     mmsDB.collection("msgCollection").insertOne(msgObj, (err, res) => {
         if (err) throw err
