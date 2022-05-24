@@ -10,14 +10,23 @@ const socket = io('/', {
 
 const messages = document.getElementById('messages');
 const msgForm = document.getElementById('msgForm');
+const pwdForm = document.getElementById('pwdForm');
 const input = document.getElementById('msgInput');
 const author = document.getElementById('authorInput')
 const sendButton = document.getElementById('sendButton')
-
+const pwd = document.getElementById('pwd')
 const userCountUI = document.getElementById("usercount")
 
-let password = prompt("What is the password")
-socket.emit("password attempt", password)
+pwdForm.addEventListener('submit', (e) => {
+  e.preventDefault()
+
+  socket.emit("password attempt", pwd.value)
+
+  socket.on("pwd success", () => {
+    pwdForm.style.display = "none"
+    msgForm.style.display = "flex"
+  })
+})
 
 msgForm.addEventListener('submit', (e) => {
   e.preventDefault();

@@ -50,6 +50,11 @@ function handleMessage(socket, msgData, mmsDB){
         msgObj.isOfficial = true
     }
 
+    if (msgObj.author == process.env.TRUMAN) {
+        msgObj.author = "Truman [OFFICIAL USER]"
+        msgObj.isOfficial = true
+    }
+
     io.to(currentRoom).emit('message', msgObj)
     mmsDB.collection("msgCollection").insertOne(msgObj, (err, res) => {
         if (err) throw err
@@ -76,6 +81,7 @@ function handleSocketConnection(socket, mmsDB){
     socket.on('password attempt', (guess) => {
         if (backupMode == false && guess == process.env.SECRET_PASSWORD || backupMode == true && guess == process.env.FALLBACK_PASSWORD || guess == process.env.DEV_PASSWORD){
             io.to(socket.id).emit("user-count update", userCount)
+            io.to(socket.id).emit("pwd success")
         } else {
             io.to(socket.id).emit("failed password")
         }
