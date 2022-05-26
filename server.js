@@ -19,42 +19,45 @@ function handleMessage(socket, msgData, mmsDB){
     let msgObj = {message : msgData[0], author : msgData[1], room : currentRoom, isOfficial : false}
     
     if (msgObj.author == process.env.PICKLE) {
-        msgObj.author = "pickle [OFFICIAL USER]"
+        msgObj.author = "pickle [OFFICIAL]"
         msgObj.isOfficial = true
     }
     if (msgObj.author == process.env.BRANDON) {
-        msgObj.author = "Brandon [OFFICIAL USER]"
+        msgObj.author = "Brandon [OFFICIAL]"
         msgObj.isOfficial = true
     }
     if (msgObj.author == process.env.ATTICUS) {
-        msgObj.author = "atticus [OFFICIAL USER]"
+        msgObj.author = "atticus [OFFICIAL]"
         msgObj.isOfficial = true
     }
     if (msgObj.author == process.env.JEAN) {
-        msgObj.author = "jean-carlo [OFFICIAL USER]"
+        msgObj.author = "jean-carlo [OFFICIAL]"
         msgObj.isOfficial = true
     }
 
     if (msgObj.author == process.env.EDEN) {
-        msgObj.author = "Eden [OFFICIAL USER]"
+        msgObj.author = "Eden [OFFICIAL]"
         msgObj.isOfficial = true
     }
 
     if (msgObj.author == process.env.NIKA) {
-        msgObj.author = "nika<3 [OFFICIAL USER]"
+        msgObj.author = "nika<3 [OFFICIAL]"
         msgObj.isOfficial = true
     }
 
     if (msgObj.author == process.env.PEARSON) {
-        msgObj.author = "pearson [OFFICIAL USER]"
+        msgObj.author = "pearson [OFFICIAL]"
         msgObj.isOfficial = true
     }
 
+<<<<<<< HEAD
     if (msgObj.author == process.env.TRUMAN) {
-        msgObj.author = "Truman [OFFICIAL USER]"
+        msgObj.author = "Truman [OFFICIAL]"
         msgObj.isOfficial = true
     }
 
+=======
+>>>>>>> parent of 7a33406 (hidden password system)
     io.to(currentRoom).emit('message', msgObj)
     mmsDB.collection("msgCollection").insertOne(msgObj, (err, res) => {
         if (err) throw err
@@ -80,7 +83,10 @@ function handleSocketConnection(socket, mmsDB){
     })
     socket.on('password attempt', (guess) => {
         if (backupMode == false && guess == process.env.SECRET_PASSWORD || backupMode == true && guess == process.env.FALLBACK_PASSWORD || guess == process.env.DEV_PASSWORD){
+<<<<<<< HEAD
             io.to(socket.id).emit("pwd success")
+=======
+>>>>>>> parent of 7a33406 (hidden password system)
             io.to(socket.id).emit("user-count update", userCount)
         } else {
             io.to(socket.id).emit("failed password")
