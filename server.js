@@ -50,14 +50,11 @@ function handleMessage(socket, msgData, mmsDB){
         msgObj.isOfficial = true
     }
 
-<<<<<<< HEAD
     if (msgObj.author == process.env.TRUMAN) {
         msgObj.author = "Truman [OFFICIAL]"
         msgObj.isOfficial = true
     }
 
-=======
->>>>>>> parent of 7a33406 (hidden password system)
     io.to(currentRoom).emit('message', msgObj)
     mmsDB.collection("msgCollection").insertOne(msgObj, (err, res) => {
         if (err) throw err
@@ -83,10 +80,7 @@ function handleSocketConnection(socket, mmsDB){
     })
     socket.on('password attempt', (guess) => {
         if (backupMode == false && guess == process.env.SECRET_PASSWORD || backupMode == true && guess == process.env.FALLBACK_PASSWORD || guess == process.env.DEV_PASSWORD){
-<<<<<<< HEAD
             io.to(socket.id).emit("pwd success")
-=======
->>>>>>> parent of 7a33406 (hidden password system)
             io.to(socket.id).emit("user-count update", userCount)
         } else {
             io.to(socket.id).emit("failed password")
