@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const express = require('express');
-const { get } = require('express/lib/response');
 const app = express();
 const http = require('http').Server(app)
 const io = require("socket.io")(http);
@@ -53,7 +52,7 @@ function handleSocketConnection(socket, mmsDB){
     socket.on('password attempt', (guess) => {
         if (backupMode == false && guess == process.env.SECRET_PASSWORD || backupMode == true && guess == process.env.FALLBACK_PASSWORD || guess == process.env.DEV_PASSWORD){
             userCount++
-            io.to(socket.id).emit("user-count update", userCount)
+            io.emit("user-count update", userCount)
             io.to(socket.id).emit("pwd success")
         } else {
             io.to(socket.id).emit("failed password")
