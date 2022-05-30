@@ -28,6 +28,43 @@ function handleMessage(socket, msgData, mmsDB){
         }
     })
 
+    /*if (msgObj.author == process.env.PICKLE) {
+        msgObj.author = "pickle [OFFICIAL]"
+        msgObj.isOfficial = true
+    }
+    if (msgObj.author == process.env.BRANDON) {
+        msgObj.author = "Brandon [OFFICIAL]"
+        msgObj.isOfficial = true
+    }
+    if (msgObj.author == process.env.ATTICUS) {
+        msgObj.author = "atticus [OFFICIAL]"
+        msgObj.isOfficial = true
+    }
+    if (msgObj.author == process.env.JEAN) {
+        msgObj.author = "jean-carlo [OFFICIAL]"
+        msgObj.isOfficial = true
+    }
+
+    if (msgObj.author == process.env.EDEN) {
+        msgObj.author = "Eden [OFFICIAL]"
+        msgObj.isOfficial = true
+    }
+
+    if (msgObj.author == process.env.NIKA) {
+        msgObj.author = "nika<3 [OFFICIAL]"
+        msgObj.isOfficial = true
+    }
+
+    if (msgObj.author == process.env) {
+        msgObj.author = "pearson [OFFICIAL USER]"
+        msgObj.isOfficial = true
+    }
+
+    if (msgObj.author == process.env) {
+        msgObj.author = "Truman [OFFICIAL USER]"
+        msgObj.isOfficial = true
+    }*/
+
     io.to(currentRoom).emit('message', msgObj)
     mmsDB.collection("msgCollection").insertOne(msgObj, (err, res) => {
         if (err) throw err
