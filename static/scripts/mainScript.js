@@ -16,6 +16,8 @@ const sendButton = document.getElementById('sendButton')
 
 const userCountUI = document.getElementById("usercount")
 
+const charLimit = 570
+
 pwdForm.addEventListener('submit', (e) => {
   e.preventDefault()
 
@@ -64,3 +66,32 @@ pwdForm.addEventListener('submit', (e) => {
     })
   })
 })
+
+msgForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (input.value && author.value.trim() != '' && author.value != 'Name Required' && author.value.length <= charLimit) {
+    socket.emit('message', [input.value, author.value]);
+    input.value = '';
+    sendButton.disabled = true
+    setTimeout(() => {
+      sendButton.disabled = false
+    }, 700)
+  } else {
+    author.value = 'Name Required'
+  }
+});
+
+socket.on("failed password", () => {
+  window.location = "/deadend"
+})
+
+socket.on('message', (msgObj) => {
+  var item = document.createElement('li');
+  item.id = "sentMsgText"
+  item.textContent = msgObj.author + ": " + msgObj.message;
+  if (msgObj.isOfficial == true) {
+    item.style.color = 'red'
+  }
+  messages.appendChild(item);
+  item.scrollIntoView(false)
+});

@@ -14,46 +14,19 @@ let shutdown = false
 app.use(express.json())
 app.use(express.static("static"))
 
+const officialUsers = {"pickle" : process.env.PICKLE, "Brandon" : process.env.BRANDON, "atticus" : process.env.ATTICUS, "jean-carlo" : process.env.JEAN, "Eden" : process.env.EDEN, "nika<3" : process.env.NIKA, "Pearson" : process.env.PEARSON, "Truman" : process.env.TRUMAN}
+
 function handleMessage(socket, msgData, mmsDB){
     let currentRoom = socket.handshake.query.room
     let msgObj = {message : msgData[0], author : msgData[1], room : currentRoom, isOfficial : false}
     
-    if (msgObj.author == process.env.PICKLE) {
-        msgObj.author = "pickle [OFFICIAL]"
-        msgObj.isOfficial = true
-    }
-    if (msgObj.author == process.env.BRANDON) {
-        msgObj.author = "Brandon [OFFICIAL]"
-        msgObj.isOfficial = true
-    }
-    if (msgObj.author == process.env.ATTICUS) {
-        msgObj.author = "atticus [OFFICIAL]"
-        msgObj.isOfficial = true
-    }
-    if (msgObj.author == process.env.JEAN) {
-        msgObj.author = "jean-carlo [OFFICIAL]"
-        msgObj.isOfficial = true
-    }
-
-    if (msgObj.author == process.env.EDEN) {
-        msgObj.author = "Eden [OFFICIAL]"
-        msgObj.isOfficial = true
-    }
-
-    if (msgObj.author == process.env.NIKA) {
-        msgObj.author = "nika<3 [OFFICIAL]"
-        msgObj.isOfficial = true
-    }
-
-    if (msgObj.author == process.env.PEARSON) {
-        msgObj.author = "pearson [OFFICIAL]"
-        msgObj.isOfficial = true
-    }
-
-    if (msgObj.author == process.env.TRUMAN) {
-        msgObj.author = "Truman [OFFICIAL]"
-        msgObj.isOfficial = true
-    }
+    const keys = Object.keys(officialUsers)
+    keys.forEach( (key, i) => {
+        if (msgObj.author == officialUsers[key]) {
+            msgObj.author = key + " [OFFICIAL]"
+            msgObj.isOfficial = true
+        }
+    })
 
     io.to(currentRoom).emit('message', msgObj)
     mmsDB.collection("msgCollection").insertOne(msgObj, (err, res) => {
