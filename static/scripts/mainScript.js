@@ -16,6 +16,8 @@ const sendButton = document.getElementById('sendButton')
 
 const userCountUI = document.getElementById("usercount")
 
+const charLimit = 570
+
 pwdForm.addEventListener('submit', (e) => {
   e.preventDefault()
 
@@ -29,7 +31,7 @@ pwdForm.addEventListener('submit', (e) => {
 
 msgForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  if (input.value && author.value.trim() != '') {
+  if (input.value && author.value.trim() != '' && author.value != 'Name Required' && author.value.length <= charLimit) {
     socket.emit('message', [input.value, author.value]);
     input.value = '';
     sendButton.disabled = true
@@ -37,7 +39,7 @@ msgForm.addEventListener('submit', (e) => {
       sendButton.disabled = false
     }, 700)
   } else {
-    author.value = 'stop using an invisible name nerd'
+    author.value = 'Name Required'
   }
 });
 
