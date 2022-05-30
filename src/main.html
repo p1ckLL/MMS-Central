@@ -12,15 +12,11 @@
 
 <body>
   <ul id="messages"></ul>
-  <form id="pwdForm" action="">
-    <input type="password" id="pwd" placeholder="Password" autocomplete="off" />
-    <input type="submit" />
-  </form>
   <form id="msgForm" action="">
     <input id="msgInput" placeholder="Message" autocomplete="off" />
     <input id="authorInput" placeholder="Username" autocomplete="off" />
     <button id="sendButton">Send</button>
-    <a href="/rooms">View<br>rooms</a>
+    <a class="button" href="/rooms">View<br>rooms</a>
     <p id="usercount">0 users online</p>
   </form>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"
