@@ -27,8 +27,9 @@ pwdForm.addEventListener('submit', (e) => {
   socket.on("pwd success", () => {
     pwdForm.style.display = "none"
     msgForm.style.display = "flex"
+    messages.style.display = "flex"
   })
-})
+});
 
 msgForm.addEventListener('submit', (e) => {
   e.preventDefault();
