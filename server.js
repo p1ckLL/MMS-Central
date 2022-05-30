@@ -53,8 +53,8 @@ function handleSocketConnection(socket, mmsDB){
     })
     socket.on('password attempt', (guess) => {
         if (backupMode == false && guess == process.env.SECRET_PASSWORD || backupMode == true && guess == process.env.FALLBACK_PASSWORD || guess == process.env.DEV_PASSWORD){
-            io.to(socket.id).emit("pwd success")
             io.to(socket.id).emit("user-count update", userCount)
+            io.to(socket.id).emit("pwd success")
         } else {
             io.to(socket.id).emit("failed password")
         }

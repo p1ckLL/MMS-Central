@@ -11,10 +11,10 @@ body * {
   font-family: inherit;
 }
 
-form {
+#msgForm {
+  display: none;
   background: rgba(0, 0, 0, 0.15);
   padding: 0.5rem 2vw;
-  display: flex;
   align-items: center;
   gap: 1rem;
   min-height: 3rem;
