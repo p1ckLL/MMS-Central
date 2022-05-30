@@ -18,6 +18,7 @@ const pwd = document.getElementById('pwd')
 const userCountUI = document.getElementById("usercount")
 
 const charLimit = 570
+let loggedIn = false
 
 pwdForm.addEventListener('submit', (e) => {
   e.preventDefault()
@@ -25,6 +26,8 @@ pwdForm.addEventListener('submit', (e) => {
   socket.emit("password attempt", pwd.value)
 
   socket.on("pwd success", () => {
+    loggedIn = true
+    
     pwdForm.style.display = "none"
     msgForm.style.display = "flex"
     messages.style.display = "flex"
