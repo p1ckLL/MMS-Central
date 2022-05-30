@@ -38,10 +38,11 @@ pwdForm.addEventListener('submit', (e) => {
         author.value = 'stop using an invisible name nerd'
       }
     });
-    
+
     socket.on("failed password", () => {
       window.location = "/deadend"
     })
+
     
     socket.on('message', (msgObj) => {
       var item = document.createElement('li');
