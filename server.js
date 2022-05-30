@@ -33,17 +33,19 @@ function handleMessage(socket, msgData, mmsDB){
     })
 }
 
-function handleSocketDisconnection(){
-    console.log('a user disconnected');
-    userCount--
-    io.emit("user-count update", userCount)
+function handleSocketDisconnection(socket){
+    console.log('a user disconnected')
+    if (socket.handshake.query.loggedIn) {
+        userCount--
+        io.emit("user-count update", userCount)
+    }
 }
 
 function handleSocketConnection(socket, mmsDB){ 
     console.log('a user connected');
 
     socket.on('disconnect', () => {
-        handleSocketDisconnection()
+        handleSocketDisconnection(socket)
     })
     socket.on('message', (msgData) => {
         handleMessage(socket, msgData, mmsDB)
@@ -52,6 +54,7 @@ function handleSocketConnection(socket, mmsDB){
         if (backupMode == false && guess == process.env.SECRET_PASSWORD || backupMode == true && guess == process.env.FALLBACK_PASSWORD || guess == process.env.DEV_PASSWORD){
             userCount++
             io.to(socket.id).emit("pwd success")
+            socket.handshake.query.loggedIn = true
             io.emit("user-count update", userCount)
         } else {
             io.to(socket.id).emit("failed password")

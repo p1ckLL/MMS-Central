@@ -4,7 +4,8 @@ console.log(roomName)
 
 const socket = io('/', {
   query : {
-    room : roomName
+    room : roomName,
+    loggedIn : false
   }
 });
 
@@ -18,6 +19,7 @@ const pwd = document.getElementById('pwd')
 const userCountUI = document.getElementById("usercount")
 
 const charLimit = 570
+let loggedIn = false
 
 pwdForm.addEventListener('submit', (e) => {
   e.preventDefault()
@@ -25,6 +27,7 @@ pwdForm.addEventListener('submit', (e) => {
   socket.emit("password attempt", pwd.value)
 
   socket.on("pwd success", () => {
+    loggedIn = true
     pwdForm.style.display = "none"
     messages.style.display = "flex"
     msgForm.style.display = "flex"
@@ -48,7 +51,6 @@ msgForm.addEventListener('submit', (e) => {
 socket.on("failed password", () => {
   window.location = "/deadend"
 })
-
 
 socket.on('message', (msgObj) => {
   var item = document.createElement('li');
