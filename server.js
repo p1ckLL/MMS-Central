@@ -7,7 +7,7 @@ const http = require('http').Server(app)
 const io = require("socket.io")(http);
 const MongoClient = require("mongodb").MongoClient
 
-let userCount = io.engine.clientsCount
+let userCount = 0
 let backupMode = false
 let shutdown = false
 
@@ -42,7 +42,6 @@ function handleSocketDisconnection(){
 
 function handleSocketConnection(socket, mmsDB){ 
     console.log('a user connected');
-    userCount++
     io.emit("user-count update", userCount)
 
     socket.on('disconnect', () => {
@@ -53,8 +52,9 @@ function handleSocketConnection(socket, mmsDB){
     })
     socket.on('password attempt', (guess) => {
         if (backupMode == false && guess == process.env.SECRET_PASSWORD || backupMode == true && guess == process.env.FALLBACK_PASSWORD || guess == process.env.DEV_PASSWORD){
-            io.to(socket.id).emit("user-count update", userCount)
+            userCount++
             io.to(socket.id).emit("pwd success")
+            io.to(socket.id).emit("user-count update", userCount)
         } else {
             io.to(socket.id).emit("failed password")
         }
