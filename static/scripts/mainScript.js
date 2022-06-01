@@ -21,7 +21,7 @@ const charLimit = 570
 
 socket.on("announcement", (announcement) => {
   if (announcement != '') {
-    window.alert(announcement)
+    window.alert("ANNOUNCEMENT: " + announcement)
   }
 })
 
