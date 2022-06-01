@@ -69,7 +69,7 @@ function handleSocketDisconnection(socket){
 
 function handleSocketConnection(socket, mmsDB){ 
     console.log('a user connected');
-    io.emit("announcement", announcement)
+    io.emit("announcement", "ANNOUNCEMENT: " + announcement)
     socket.loggedIn = false
 
     socket.on('disconnect', () => {
