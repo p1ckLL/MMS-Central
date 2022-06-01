@@ -19,6 +19,12 @@ const userCountUI = document.getElementById("usercount")
 
 const charLimit = 570
 
+socket.on("announcement", (announcement) => {
+  if (announcement != '') {
+    window.alert(announcement)
+  }
+})
+
 pwdForm.addEventListener('submit', (e) => {
   e.preventDefault()
 

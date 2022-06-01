@@ -9,11 +9,37 @@ const MongoClient = require("mongodb").MongoClient
 let userCount = 0
 let backupMode = false
 let shutdown = false
+let announcement = ''
 
 app.use(express.json())
 app.use(express.static("static"))
 
 const officialUsers = {"pickle" : process.env.PICKLE, "Brandon" : process.env.BRANDON, "atticus" : process.env.ATTICUS, "jean-carlo" : process.env.JEAN, "Eden" : process.env.EDEN, "nika<3" : process.env.NIKA, "Pearson" : process.env.PEARSON, "Truman" : process.env.TRUMAN}
+
+function handleCodeAttempt(code) {
+    if (code == process.env.BACKUP_CODE){
+        backupMode = !backupMode
+        io.emit('refresh')
+    }
+    if (code == process.env.SHUTDOWN_CODE) {
+        shutdown = !shutdown
+        io.emit('refresh')
+    }
+    if (code.split("=")[0] == process.env.ANNOUNCE_CODE) {
+        announcement = code.split("=")[1]
+    }
+}
+
+function handlePasswordAttempt(socket, guess) {
+    if (backupMode == false && guess == process.env.SECRET_PASSWORD || backupMode == true && guess == process.env.FALLBACK_PASSWORD || guess == process.env.DEV_PASSWORD){
+        io.to(socket.id).emit("pwd success")
+        socket.loggedIn = true
+        userCount++
+        io.emit("user-count update", userCount)
+    } else {
+        io.to(socket.id).emit("failed password")
+    }
+}
 
 function handleMessage(socket, msgData, mmsDB){
     let currentRoom = socket.handshake.query.room
@@ -43,6 +69,7 @@ function handleSocketDisconnection(socket){
 
 function handleSocketConnection(socket, mmsDB){ 
     console.log('a user connected');
+    io.emit("announcement", announcement)
     socket.loggedIn = false
 
     socket.on('disconnect', () => {
@@ -52,24 +79,10 @@ function handleSocketConnection(socket, mmsDB){
         handleMessage(socket, msgData, mmsDB)
     })
     socket.on('password attempt', (guess) => {
-        if (backupMode == false && guess == process.env.SECRET_PASSWORD || backupMode == true && guess == process.env.FALLBACK_PASSWORD || guess == process.env.DEV_PASSWORD){
-            io.to(socket.id).emit("pwd success")
-            socket.loggedIn = true
-            userCount++
-            io.emit("user-count update", userCount)
-        } else {
-            io.to(socket.id).emit("failed password")
-        }
+        handlePasswordAttempt(socket, guess)
     })
     socket.on('code attempt', (code) => {
-        if (code == process.env.BACKUP_CODE){
-            backupMode = !backupMode
-            io.emit('refresh')
-        }
-        if (code == process.env.SHUTDOWN_CODE) {
-            shutdown = !shutdown
-            io.emit('refresh')
-        }
+        handleCodeAttempt(code)
     })
 }
 
